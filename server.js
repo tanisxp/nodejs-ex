@@ -92,8 +92,23 @@ app.get('/pagecount', function (req, res) {
   }
 });
 
-app.use(express.static(__dirname + '/css'));
-app.use(express.static(__dirname + '/js'));
+//Serve static content for the app from the "public" directory in the application directory.
+
+    // GET /style.css etc
+    app.use(express.static(__dirname + '/css'));
+    app.use(express.static(__dirname + '/js'));
+    app.use(express.static(__dirname + '/jquery-ui'));
+// Mount the middleware at "/static" to serve static content only when their request path is prefixed with "/static".
+
+    // GET /static/style.css etc.
+    app.use('/css', express.static(__dirname + '/css'));
+    app.use('/jquery-ui', express.static(__dirname + '/jquery-ui'));
+    app.use('/js', express.static(__dirname + '/js'));
+
+//console.log("dirname?  " + __dirname + '/css');
+//app.use(express.static(__dirname + '/css'));
+//app.use(express.static(__dirname + '/js'));
+//app.use(express.static(__dirname + '/jquery-ui'));
 
 // error handling
 app.use(function(err, req, res, next){
