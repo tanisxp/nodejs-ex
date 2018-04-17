@@ -3,10 +3,21 @@ var express = require('express'),
     app     = express(),
     morgan  = require('morgan');
     
+
+
+
+    
 Object.assign=require('object-assign')
 
 app.engine('html', require('ejs').renderFile);
 app.use(morgan('combined'))
+
+
+
+//app.use(app.router);
+app.set('view engine', 'ejs');
+
+
 
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 3000,
     ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '0.0.0.0',
@@ -70,10 +81,10 @@ app.get('/', function (req, res) {
       if (err) {
         console.log('Error running count. Message:\n'+err);
       }
-      res.render('index.html', { pageCountMessage : count, dbInfo: dbDetails });
+      res.render('index.ejs', { pageCountMessage : count, dbInfo: dbDetails });
     });
   } else {
-    res.render('index.html', { pageCountMessage : null});
+    res.render('index.ejs', { pageCountMessage : null});
   }
 });
 
@@ -92,6 +103,15 @@ app.get('/pagecount', function (req, res) {
   }
 });
 
+app.get('/servicios', function (req, res) {
+  res.render('servicios.ejs', { pageCountMessage : null});
+});
+
+app.get('/index', function (req, res) {
+  res.render('index.ejs', { pageCountMessage : null});
+});
+
+
 //Serve static content for the app from the "public" directory in the application directory.
 
     // GET /style.css etc
@@ -104,6 +124,8 @@ app.get('/pagecount', function (req, res) {
     app.use('/css', express.static(__dirname + '/css'));
     app.use('/jquery-ui', express.static(__dirname + '/jquery-ui'));
     app.use('/js', express.static(__dirname + '/js'));
+
+    app.use(express.static(__dirname + '/views', ));
 
 //console.log("dirname?  " + __dirname + '/css');
 //app.use(express.static(__dirname + '/css'));
